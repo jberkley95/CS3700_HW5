@@ -9,12 +9,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class PCIsolated {
     public static void main(String[] args) {
+        final int NUM_PRODUCERS = 2, NUM_CONSUMERS = 5;
         final BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(10);
 
         Runnable producer = () -> {
             try {
                 for (int i = 0; i < 100; i++) {
-                    Thread.sleep(10);
                     queue.put(i);
                     System.out.println(Thread.currentThread().getName() + " Produced " + i);
 
@@ -38,12 +38,17 @@ public class PCIsolated {
             }
         };
 
-        final int NUM_PRODUCERS = 2, NUM_CONSUMERS = 5;
+        long startTime = System.currentTimeMillis();
+
         for (int i = 0; i < NUM_PRODUCERS; i++) {
             new Thread(producer).start();
         }
         for (int i = 0; i < NUM_CONSUMERS; i++) {
             new Thread(consumer).start();
         }
+
+        long endTime = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+        System.out.println("Total Runtime: " + totalTime + " milliseconds.");
     }
 }

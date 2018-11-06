@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class PCAtomics {
     public static void main(String[] args) {
+        final int NUM_PRODUCERS = 2, NUM_CONSUMERS = 5;
         final AtomicInteger activeProducers = new AtomicInteger();
         final BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(10);
 
@@ -39,7 +40,8 @@ public class PCAtomics {
             }
         };
 
-        final int NUM_PRODUCERS = 2, NUM_CONSUMERS = 5;
+        long startTime = System.currentTimeMillis();
+
         for (int i = 0; i < NUM_PRODUCERS; i++) {
             activeProducers.incrementAndGet();
             new Thread(producer).start();
@@ -47,5 +49,9 @@ public class PCAtomics {
         for (int i = 0; i < NUM_CONSUMERS; i++) {
             new Thread(consumer).start();
         }
+
+        long endTime = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+        System.out.println("Total Runtime: " + totalTime + " milliseconds.");
     }
 }

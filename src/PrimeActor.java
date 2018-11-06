@@ -35,6 +35,9 @@ public class PrimeActor extends AbstractActor {
                         for (int i = localPrime; i <= N; i++) {
                             if (isPrime[i]) {
                                 System.out.println(i);
+                                if (i == 999983) {
+                                    SieveActor.endTime = System.nanoTime();
+                                }
                             }
                         }
                         manager.tell(new PrimeActor.End(), ActorRef.noSender());

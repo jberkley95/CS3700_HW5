@@ -9,6 +9,8 @@ import java.io.IOException;
  * Date Created: Nov 03, 2018
  */
 public class SieveActor {
+    static long endTime;
+
     public static void main(String[] args) {
         final ActorSystem sieveSystem = ActorSystem.create("Sieve");
         final int N = 1_000_000;
@@ -18,9 +20,8 @@ public class SieveActor {
         try {
             long startTime = System.nanoTime();
             sManager.tell(new Start(N), ActorRef.noSender());
-            long endTime = System.nanoTime();
-            long totalTime = endTime - startTime;
             System.in.read();
+            long totalTime = endTime - startTime;
             System.out.printf("Total Runtime: %.2f milliseconds.", totalTime * 1e-6);
         } catch (IOException ignored) {
         } finally {
