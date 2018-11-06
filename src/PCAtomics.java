@@ -13,7 +13,7 @@ public class PCAtomics {
     static long endTime;
 
     public static void main(String[] args) throws IOException {
-        final int NUM_PRODUCERS = 2, NUM_CONSUMERS = 5;
+        final int NUM_PRODUCERS = 5, NUM_CONSUMERS = 2;
         final AtomicInteger activeProducers = new AtomicInteger();
         final BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(10);
 
