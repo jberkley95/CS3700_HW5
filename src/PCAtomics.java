@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -9,7 +10,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Date Created: Nov 05, 2018
  */
 public class PCAtomics {
-    public static void main(String[] args) {
+    static long endTime;
+
+    public static void main(String[] args) throws IOException {
         final int NUM_PRODUCERS = 2, NUM_CONSUMERS = 5;
         final AtomicInteger activeProducers = new AtomicInteger();
         final BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(10);
@@ -33,6 +36,7 @@ public class PCAtomics {
                         System.out.println(Thread.currentThread().getName() + " Consumed : " + queueElement);
                         Thread.sleep(1000);
                     } else if (activeProducers.get() == 0 && queue.peek() == null) {
+                        endTime = System.currentTimeMillis();
                         return;
                     }
                 }
@@ -50,7 +54,7 @@ public class PCAtomics {
             new Thread(consumer).start();
         }
 
-        long endTime = System.currentTimeMillis();
+        System.in.read();
         long totalTime = endTime - startTime;
         System.out.println("Total Runtime: " + totalTime + " milliseconds.");
     }

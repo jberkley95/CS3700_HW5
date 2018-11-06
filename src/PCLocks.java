@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -9,7 +10,9 @@ import java.util.concurrent.locks.ReentrantLock;
  * Date Created: Nov 05, 2018
  */
 public class PCLocks {
-    public static void main(String[] args) {
+    static long endTime;
+
+    public static void main(String[] args) throws IOException {
         final int NUM_PRODUCERS = 5, NUM_CONSUMERS = 2;
         final ReentrantLock lock = new ReentrantLock();
         final BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(10);
@@ -33,6 +36,7 @@ public class PCLocks {
                         System.out.println(Thread.currentThread().getName() + " Consumed : " + queueElement);
                         Thread.sleep(1000);
                     } else if (!lock.isLocked() && queue.peek() == null) {
+                        endTime = System.currentTimeMillis();
                         return;
                     }
                 }
@@ -49,8 +53,7 @@ public class PCLocks {
             new Thread(consumer).start();
         }
 
-
-        long endTime = System.currentTimeMillis();
+        System.in.read();
         long totalTime = endTime - startTime;
         System.out.println("Total Runtime: " + totalTime + " milliseconds.");
     }
